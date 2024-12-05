@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AAA Arcana - Metaphysical Consultations</title>
+    <style>
+        :root {
+            --neon-purple: #b829e9;
+            --neon-blue: #2962ff;
+            --neon-pink: #ff0099;
+            --neon-gold: #ffd700;
+            --star-gold: #fff5c2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0a0f;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 2rem;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        nav a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 2s;
+        }
+
+        nav a:hover {
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .title-container {
+            text-align: center;
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--neon-purple);
+            opacity: 0;
+            animation: revealTitle 2s ease forwards;
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--neon-blue);
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1.5s;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2.5s;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(184, 41, 233, 0.2);
+        }
+
+        .service-card h3 {
+            color: var(--neon-pink);
+            margin-bottom: 1rem;
+        }
+
+        .sigil {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: var(--star-gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration) linear infinite;
+            animation-delay: var(--delay);
+            mix-blend-mode: screen;
+        }
+
+        .constellation-point {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-blue);
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .constellation-line {
+            position: absolute;
+            background: linear-gradient(90deg, var(--neon-gold), var(--neon-blue));
+            height: 2px;
+            transform-origin: left center;
+            opacity: 0;
+            box-shadow: 0 0 10px var(--neon-gold), 0 0 20px var(--neon-blue);
+            animation: fadeIn 0.3s forwards;
+            z-index: 1;
+        }
+
+        .star.active {
+            width: 6px !important;
+            height: 6px !important;
+            background: var(--neon-gold) !important;
+            box-shadow: 0 0 15px var(--neon-gold), 0 0 25px var(--neon-purple);
+            opacity: 1 !important;
+            z-index: 3;
+            animation: starPulse 1s infinite !important;
+        }
+
+        .star.clickable {
+            cursor: pointer;
+            z-index: 2;
+            animation: clickableTwinkle 1.5s infinite !important;
+        }
+
+        .star.clickable:hover {
+            background: var(--neon-gold);
+            box-shadow: 0 0 15px var(--neon-gold);
+        }
+
+        .tarot-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .tarot-card.flipped.reversed {
+            transform: rotateY(180deg) rotateZ(180deg);
+        }
+
+        .tarot-card-front {
+            background: linear-gradient(45deg, #2a1f3d, #1a1a2e);
+            border: 2px solid var(--neon-purple);
+            transform: rotateY(180deg);
+            padding: 1rem;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .tarot-card-front.reversed {
+            transform: rotateY(180deg) rotateZ(180deg);
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
+        }
+
+        .card-content.reversed {
+            color: var(--neon-purple);
+        }
+
+        .card-title {
+            color: var(--neon-gold);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px var(--neon-gold);
+        }
+
+        .card-meaning {
+            color: var(--star-gold);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .draw-button {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .draw-button:hover {
+            box-shadow: 0 0 20px rgba(184, 41, 233, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .draw-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes revealTitle {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+                letter-spacing: 0.1em;
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                letter-spacing: 0.3em;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatSigil {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(var(--moveX), var(--moveY)) rotate(var(--rotation)); }
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0;
+                transform: translateZ(0) scale(0.5);
+            }
+            50% {
+                opacity: var(--opacity);
+                transform: translateZ(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateZ(0) scale(0.5);
+            }
+        }
+
+        @keyframes clickableTwinkle {
+            0% {
+                opacity: 0.3;
+                transform: scale(1);
+                box-shadow: 0 0 5px var(--neon-gold);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+                box-shadow: 0 0 15px var(--neon-gold);
+            }
+            100% {
+                opacity: 0.3;
+                transform: scale(1);
+                box-shadow: 0 0 5px var(--neon-gold);
+            }
+        }
+
+        @keyframes starPulse {
+            0% {
+                box-shadow: 0 0 15px var(--neon-gold), 0 0 25px var(--neon-purple);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 25px var(--neon-gold), 0 0 35px var(--neon-purple);
+                transform: scale(1.2);
+            }
+            100% {
+                box-shadow: 0 0 15px var(--neon-gold), 0 0 25px var(--neon-purple);
+                transform: scale(1);
+            }
+        }
+
+        @keyframes constellationSuccess {
+            0% { 
+                box-shadow: 0 0 10px var(--neon-gold);
+                background: var(--neon-gold);
+            }
+            50% { 
+                box-shadow: 0 0 30px var(--neon-gold), 0 0 50px var(--neon-purple);
+                background: var(--neon-purple);
+            }
+            100% { 
+                box-shadow: 0 0 10px var(--neon-gold);
+                background: var(--neon-gold);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+            animation-delay: 3s;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            nav {
+                justify-content: center;
+            }
+        }
+
+        .tarot-section {
+            text-align: center;
+            margin: 4rem 0;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2.5s;
+        }
+
+        .tarot-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tarot-card {
+            width: 180px;
+            height: 300px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease;
+        }
+
+        .tarot-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .tarot-card-back {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            border: 2px solid var(--neon-gold);
+        }
+
+        .tarot-card-back::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/></svg>') center no-repeat;
+            opacity: 0.3;
+        }
+
+        .draw-button {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .draw-button:hover {
+            box-shadow: 0 0 20px rgba(184, 41, 233, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .draw-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @keyframes cardGlow {
+            0% { box-shadow: 0 0 10px var(--neon-gold); }
+            50% { box-shadow: 0 0 20px var(--neon-gold), 0 0 30px var(--neon-purple); }
+            100% { box-shadow: 0 0 10px var(--neon-gold); }
+        }
+    </style>
+</head>
+<body>
+    <div class="starfield" id="starfield"></div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="container">
+        <div class="title-container">
+            <h1>AAA Arcana</h1>
+            <p class="subtitle">Illuminating the Hidden • Investigating the Unknown</p>
+        </div>
+
+        <section class="services">
+            <div class="service-card">
+                <h3>Paranormal Investigations</h3>
+                <p>Professional investigation of unexplained phenomena, hauntings, and metaphysical disturbances. Our team employs both traditional methods and cutting-edge technology to document and analyze paranormal activity.</p>
+            </div>
+            <div class="service-card">
+                <h3>Occult Consultations</h3>
+                <p>Expert guidance in esoteric traditions, ritual practices, and ancient wisdom. From hermetic philosophy to practical magic, we offer personalized consultation for practitioners of all levels.</p>
+            </div>
+            <div class="service-card">
+                <h3>Technomancy Services</h3>
+                <p>Bridging the gap between technology and the occult. Digital divination, electronic wards, and cyber-ritual assistance. Specialized in protecting digital spaces and enhancing technological interfaces with metaphysical principles.</p>
+            </div>
+            <div class="service-card">
+                <h3>Spiritual Cleansing</h3>
+                <p>Professional space clearing, energy purification, and spiritual cleansing services. We address residual energies, attachments, and spiritual disturbances in both physical and digital environments.</p>
+            </div>
+            <div class="service-card">
+                <h3>Esoteric Research</h3>
+                <p>In-depth investigation of historical occult texts, artifacts, and phenomena. Our scholars provide comprehensive analysis and documentation of metaphysical mysteries and philosophical inquiries.</p>
+            </div>
+            <div class="service-card">
+                <h3>Divination & Analysis</h3>
+                <p>Multi-system divination services including tarot, astrology, numerology, and geomancy. We combine traditional methods with modern analytical approaches for deeper insight.</p>
+            </div>
+        </section>
+
+        <section class="tarot-section">
+            <h2 style="color: var(--neon-gold); margin-bottom: 1.5rem; text-shadow: 0 0 10px var(--neon-gold);">
+                Daily Insight Reading
+            </h2>
+            <p style="color: var(--star-gold); max-width: 600px; margin: 0 auto 2rem; font-size: 1.1rem;">
+                Receive guidance from the arcane through our digital tarot reading. Focus on your question as you draw the cards.
+            </p>
+            
+            <div class="tarot-container" id="tarotContainer">
+                <div class="tarot-card">
+                    <div class="tarot-card-face tarot-card-back"></div>
+                    <div class="tarot-card-face tarot-card-front">
+                        <div class="card-content">
+                            <div class="card-title">Past</div>
+                            <div class="card-meaning"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tarot-card">
+                    <div class="tarot-card-face tarot-card-back"></div>
+                    <div class="tarot-card-face tarot-card-front">
+                        <div class="card-content">
+                            <div class="card-title">Present</div>
+                            <div class="card-meaning"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tarot-card">
+                    <div class="tarot-card-face tarot-card-back"></div>
+                    <div class="tarot-card-face tarot-card-front">
+                        <div class="card-content">
+                            <div class="card-title">Future</div>
+                            <div class="card-meaning"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="draw-button" id="drawButton">Draw Cards</button>
+        </section>
+
+        <section class="cta-section" style="text-align: center; margin: 4rem 0; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 3s;">
+            <h2 style="color: var(--neon-gold); margin-bottom: 1.5rem; text-shadow: 0 0 10px var(--neon-gold);">Seeking Answers?</h2>
+            <p style="color: var(--star-gold); font-size: 1.2rem; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Whether you're facing unexplained phenomena, seeking spiritual guidance, or requiring occult expertise, our team of experienced practitioners is here to assist. We approach each case with professionalism, discretion, and deep respect for the metaphysical arts.
+            </p>
+            <a href="contact.html" class="contact-button" style="
+                display: inline-block;
+                padding: 1rem 2rem;
+                background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
+                color: white;
+                text-decoration: none;
+                border-radius: 5px;
+                font-size: 1.1rem;
+                transition: all 0.3s ease;
+                box-shadow: 0 0 15px rgba(184, 41, 233, 0.3);
+            ">
+                Begin Your Consultation
+            </a>
+        </section>
+
+        <section class="specialties" style="margin: 4rem 0; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 3.5s;">
+            <div style="
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: 10px;
+                padding: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            ">
+                <h3 style="color: var(--neon-gold); margin-bottom: 1rem; text-shadow: 0 0 10px var(--neon-gold);">Areas of Expertise</h3>
+                <div style="
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 1rem;
+                    color: var(--star-gold);
+                ">
+                    <ul style="list-style: none; padding: 0;">
+                        <li>• Paranormal Investigation</li>
+                        <li>• Electronic Voice Phenomena</li>
+                        <li>• Quantum Mysticism</li>
+                        <li>• Digital Exorcisms</li>
+                    </ul>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>• Hermetic Philosophy</li>
+                        <li>• Ancient Grimoires</li>
+                        <li>• Ceremonial Magic</li>
+                        <li>• Energy Work</li>
+                    </ul>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>• Technomantic Protection</li>
+                        <li>• Cyber Sigils</li>
+                        <li>• Astral Projection</li>
+                        <li>• Spirit Communication</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p> 2024 AAA Arcana. All rights reserved.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">Investigating the Unexplained • Illuminating the Unknown</p>
+        </footer>
+    </div>
+
+    <script>
+        const sigilShapes = [
+            'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)', // diamond
+            'circle(50% at 50% 50%)', // circle
+            'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)', // pentagon
+            'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)' // octagon
+        ];
+
+        const sigilColors = [
+            'var(--neon-purple)',
+            'var(--neon-blue)',
+            'var(--neon-pink)'
+        ];
+
+        function createSigil() {
+            const sigil = document.createElement('div');
+            sigil.className = 'sigil';
+            
+            // Random position
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            
+            // Random movement
+            const moveX = (Math.random() - 0.5) * 200;
+            const moveY = (Math.random() - 0.5) * 200;
+            const rotation = Math.random() * 360;
+            
+            sigil.style.left = `${x}px`;
+            sigil.style.top = `${y}px`;
+            sigil.style.clipPath = sigilShapes[Math.floor(Math.random() * sigilShapes.length)];
+            sigil.style.border = `2px solid ${sigilColors[Math.floor(Math.random() * sigilColors.length)]}`;
+            sigil.style.setProperty('--moveX', `${moveX}px`);
+            sigil.style.setProperty('--moveY', `${moveY}px`);
+            sigil.style.setProperty('--rotation', `${rotation}deg`);
+            
+            sigil.style.animation = 'floatSigil 20s linear infinite, fadeIn 2s ease forwards';
+            
+            document.body.appendChild(sigil);
+
+            setTimeout(() => {
+                sigil.style.animation = 'floatSigil 20s linear infinite, fadeIn 2s ease forwards reverse';
+                setTimeout(() => sigil.remove(), 2000);
+            }, 18000);
+        }
+
+        // Start creating sigils gradually
+        let sigilCount = 0;
+        const maxSigils = 15;
+        
+        function addSigilWithDelay() {
+            if (sigilCount < maxSigils) {
+                createSigil();
+                sigilCount++;
+                setTimeout(addSigilWithDelay, 2000);
+            }
+        }
+
+        // Start after a short delay
+        setTimeout(addSigilWithDelay, 1000);
+
+        // Starfield animation with clickable stars
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            const numberOfStars = 200;
+            const clickableStars = 7; // Number of stars that can be part of constellation
+            const stars = [];
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const size = Math.random() * 2 + 1;
+                // Faster animation duration: between 1.5 and 3 seconds
+                const duration = Math.random() * 1.5 + 1.5;
+                const delay = Math.random() * duration;
+                // Higher base opacity
+                const opacity = Math.random() * 0.7 + 0.3;
+                
+                star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    --duration: ${duration}s;
+                    --delay: -${delay}s;
+                    --opacity: ${opacity};
+                `;
+
+                // Make some stars clickable for constellation
+                if (i < clickableStars) {
+                    star.classList.add('clickable');
+                    star.dataset.index = i;
+                    // Make clickable stars slightly larger
+                    star.style.width = '4px';
+                    star.style.height = '4px';
+                    stars.push({
+                        element: star,
+                        x: x,
+                        y: y
+                    });
+                }
+                
+                starfield.appendChild(star);
+            }
+
+            return stars;
+        }
+
+        // Initialize constellation drawing system
+        const clickableStars = createStarfield();
+        let constellationPoints = [];
+        let lines = [];
+        
+        // Correct pattern for the constellation (indices of clickable stars)
+        const correctPattern = [0, 1, 2, 3, 4, 5, 6];
+
+        document.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.classList.contains('clickable') && !target.classList.contains('active')) {
+                const index = parseInt(target.dataset.index);
+                const rect = target.getBoundingClientRect();
+                const x = parseFloat(target.style.left);
+                const y = parseFloat(target.style.top);
+
+                // Activate the star
+                target.classList.add('active');
+                constellationPoints.push({ index, x, y });
+
+                // Draw line between points
+                if (constellationPoints.length > 1) {
+                    const prev = constellationPoints[constellationPoints.length - 2];
+                    const current = constellationPoints[constellationPoints.length - 1];
+                    
+                    drawConstellationLine(prev, current);
+                }
+
+                // Check if the constellation is complete
+                if (constellationPoints.length === correctPattern.length) {
+                    const isCorrect = constellationPoints.every((point, i) => 
+                        point.index === correctPattern[i]
+                    );
+
+                    if (isCorrect) {
+                        // Successful constellation animation
+                        constellationPoints.forEach(point => {
+                            const star = clickableStars[point.index].element;
+                            star.style.animation = 'constellationSuccess 1s infinite';
+                        });
+
+                        // Create portal effect
+                        setTimeout(() => {
+                            const portal = document.createElement('div');
+                            portal.style.cssText = `
+                                position: fixed;
+                                top: 50%;
+                                left: 50%;
+                                transform: translate(-50%, -50%);
+                                width: 100px;
+                                height: 100px;
+                                border: 2px solid var(--neon-purple);
+                                border-radius: 50%;
+                                animation: portalOpen 2s forwards;
+                                z-index: 1000;
+                            `;
+                            document.body.appendChild(portal);
+                            
+                            // Add portal animation
+                            const style = document.createElement('style');
+                            style.textContent = `
+                                @keyframes portalOpen {
+                                    0% { 
+                                        width: 100px;
+                                        height: 100px;
+                                        opacity: 0;
+                                    }
+                                    50% { 
+                                        width: 200px;
+                                        height: 200px;
+                                        opacity: 1;
+                                        transform: translate(-50%, -50%) rotate(180deg);
+                                    }
+                                    100% { 
+                                        width: 100vw;
+                                        height: 100vh;
+                                        opacity: 0;
+                                        transform: translate(-50%, -50%) rotate(360deg);
+                                    }
+                                }
+                            `;
+                            document.head.appendChild(style);
+                            
+                            // Redirect to grimoire
+                            setTimeout(() => {
+                                window.location.href = 'grimoire.html';
+                            }, 2000);
+                        }, 1500);
+                    } else {
+                        // Reset constellation if incorrect
+                        resetConstellation();
+                    }
+                }
+            }
+        });
+
+        function drawConstellationLine(point1, point2) {
+            const line = document.createElement('div');
+            line.className = 'constellation-line';
+            
+            // Calculate line position and length
+            const x1 = point1.x;
+            const y1 = point1.y;
+            const x2 = point2.x;
+            const y2 = point2.y;
+            
+            const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+            const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+            
+            line.style.cssText = `
+                left: ${x1}%;
+                top: ${y1}%;
+                width: ${length}%;
+                transform: rotate(${angle}deg);
+            `;
+            
+            document.getElementById('starfield').appendChild(line);
+            lines.push(line);
+        }
+
+        function resetConstellation() {
+            // Remove active class from stars
+            document.querySelectorAll('.star.active').forEach(star => {
+                star.classList.remove('active');
+                star.style.animation = '';
+            });
+            
+            // Remove constellation lines
+            lines.forEach(line => line.remove());
+            lines = [];
+            
+            // Reset points array
+            constellationPoints = [];
+        }
+
+        // Reset constellation after 5 seconds of inactivity
+        let resetTimer;
+        document.addEventListener('click', () => {
+            clearTimeout(resetTimer);
+            resetTimer = setTimeout(resetConstellation, 5000);
+        });
+
+        // Tarot card functionality
+        const tarotCards = [
+            // Major Arcana
+            { 
+                name: "The Fool", 
+                meaning: "New beginnings, innocence, spontaneity",
+                reversedMeaning: "Recklessness, risk-taking, second-guessing"
+            },
+            { 
+                name: "The Magician", 
+                meaning: "Manifestation, resourcefulness, power",
+                reversedMeaning: "Manipulation, poor planning, untapped talents"
+            },
+            { 
+                name: "The High Priestess", 
+                meaning: "Intuition, mystery, inner knowledge",
+                reversedMeaning: "Secrets kept, disconnection, withdrawal"
+            },
+            { 
+                name: "The Empress", 
+                meaning: "Abundance, nurturing, fertility",
+                reversedMeaning: "Creative block, dependence, emptiness"
+            },
+            { 
+                name: "The Emperor", 
+                meaning: "Authority, structure, leadership",
+                reversedMeaning: "Domination, rigidity, lack of discipline"
+            },
+            { 
+                name: "The Hierophant", 
+                meaning: "Tradition, conformity, belief systems",
+                reversedMeaning: "Challenge to beliefs, unconventionality, rebellion"
+            },
+            { 
+                name: "The Lovers", 
+                meaning: "Relationships, choices, harmony",
+                reversedMeaning: "Disharmony, imbalance, misalignment"
+            },
+            { 
+                name: "The Chariot", 
+                meaning: "Control, willpower, determination",
+                reversedMeaning: "Lack of direction, aggression, defeat"
+            },
+            { 
+                name: "Strength", 
+                meaning: "Courage, patience, compassion",
+                reversedMeaning: "Self-doubt, weakness, raw emotion"
+            },
+            { 
+                name: "The Hermit", 
+                meaning: "Introspection, searching, guidance",
+                reversedMeaning: "Isolation, loneliness, withdrawal"
+            },
+            { 
+                name: "Wheel of Fortune", 
+                meaning: "Change, cycles, destiny",
+                reversedMeaning: "Bad luck, resistance to change, breaking cycles"
+            },
+            { 
+                name: "Justice", 
+                meaning: "Fairness, truth, cause and effect",
+                reversedMeaning: "Unfairness, dishonesty, karmic lessons"
+            },
+            { 
+                name: "The Hanged Man", 
+                meaning: "Surrender, letting go, new perspective",
+                reversedMeaning: "Stalling, needless sacrifice, fear of sacrifice"
+            },
+            { 
+                name: "Death", 
+                meaning: "Endings, transformation, transition",
+                reversedMeaning: "Resistance to change, stagnation, decay"
+            },
+            { 
+                name: "Temperance", 
+                meaning: "Balance, moderation, patience",
+                reversedMeaning: "Imbalance, excess, lack of harmony"
+            },
+            { 
+                name: "The Devil", 
+                meaning: "Bondage, materialism, detachment",
+                reversedMeaning: "Breaking free, release, restoring control"
+            },
+            { 
+                name: "The Tower", 
+                meaning: "Sudden change, upheaval, revelation",
+                reversedMeaning: "Disaster avoided, fear of change, resisting revelation"
+            },
+            { 
+                name: "The Star", 
+                meaning: "Hope, inspiration, generosity",
+                reversedMeaning: "Lack of faith, despair, disconnection"
+            },
+            { 
+                name: "The Moon", 
+                meaning: "Illusion, fear, anxiety",
+                reversedMeaning: "Release of fear, repressed emotion, inner confusion"
+            },
+            { 
+                name: "The Sun", 
+                meaning: "Joy, success, vitality",
+                reversedMeaning: "Temporary depression, lack of success, blocked joy"
+            },
+            { 
+                name: "Judgement", 
+                meaning: "Rebirth, inner calling, absolution",
+                reversedMeaning: "Self-doubt, refusal of call, lack of self-awareness"
+            },
+            { 
+                name: "The World", 
+                meaning: "Completion, integration, accomplishment",
+                reversedMeaning: "Lack of completion, stagnation, delay"
+            },
+
+            // Wands (Fire)
+            { 
+                name: "Ace of Wands", 
+                meaning: "Creation, inspiration, new opportunities",
+                reversedMeaning: "Lack of energy, creative block, delays"
+            },
+            { 
+                name: "Two of Wands", 
+                meaning: "Future planning, progress, decisions",
+                reversedMeaning: "Fear of change, playing it safe, bad planning"
+            },
+            { 
+                name: "Three of Wands", 
+                meaning: "Expansion, foresight, overseas opportunities",
+                reversedMeaning: "Lack of foresight, obstacles, delays"
+            },
+            { 
+                name: "Four of Wands", 
+                meaning: "Celebration, harmony, homecoming",
+                reversedMeaning: "Lack of support, transience, home conflicts"
+            },
+            { 
+                name: "Five of Wands", 
+                meaning: "Competition, conflict, diversity",
+                reversedMeaning: "Avoiding conflict, end of strife, cooperation"
+            },
+            { 
+                name: "Six of Wands", 
+                meaning: "Victory, recognition, achievement",
+                reversedMeaning: "Self-doubt, lack of recognition, failure"
+            },
+            { 
+                name: "Seven of Wands", 
+                meaning: "Challenge, perseverance, defense",
+                reversedMeaning: "Giving up, overwhelmed, defensiveness"
+            },
+            { 
+                name: "Eight of Wands", 
+                meaning: "Swift action, movement, air travel",
+                reversedMeaning: "Delays, frustration, slowing down"
+            },
+            { 
+                name: "Nine of Wands", 
+                meaning: "Resilience, courage, persistence",
+                reversedMeaning: "Exhaustion, giving up, low energy"
+            },
+            { 
+                name: "Ten of Wands", 
+                meaning: "Burden, responsibility, hard work",
+                reversedMeaning: "Burning out, avoiding responsibility"
+            },
+            { 
+                name: "Page of Wands", 
+                meaning: "Exploration, excitement, discovery",
+                reversedMeaning: "Lack of direction, procrastination"
+            },
+            { 
+                name: "Knight of Wands", 
+                meaning: "Energy, passion, adventure",
+                reversedMeaning: "Impulsiveness, recklessness, burnout"
+            },
+            { 
+                name: "Queen of Wands", 
+                meaning: "Confidence, determination, social butterfly",
+                reversedMeaning: "Self-doubt, jealousy, insecurity"
+            },
+            { 
+                name: "King of Wands", 
+                meaning: "Leadership, vision, entrepreneur",
+                reversedMeaning: "Impulsiveness, poor leadership, domination"
+            },
+
+            // Cups (Water)
+            { 
+                name: "Ace of Cups", 
+                meaning: "New feelings, spirituality, intuition",
+                reversedMeaning: "Emotional loss, blocked feelings"
+            },
+            { 
+                name: "Two of Cups", 
+                meaning: "Partnership, attraction, connection",
+                reversedMeaning: "Broken partnership, disharmony"
+            },
+            { 
+                name: "Three of Cups", 
+                meaning: "Celebration, friendship, community",
+                reversedMeaning: "Overindulgence, gossip, isolation"
+            },
+            { 
+                name: "Four of Cups", 
+                meaning: "Contemplation, apathy, reevaluation",
+                reversedMeaning: "New hope, acceptance, moving on"
+            },
+            { 
+                name: "Five of Cups", 
+                meaning: "Loss, grief, disappointment",
+                reversedMeaning: "Recovery, forgiveness, moving on"
+            },
+            { 
+                name: "Six of Cups", 
+                meaning: "Nostalgia, childhood, innocence",
+                reversedMeaning: "Living in the past, naivety"
+            },
+            { 
+                name: "Seven of Cups", 
+                meaning: "Choices, fantasy, illusion",
+                reversedMeaning: "Clarity, focus, commitment"
+            },
+            { 
+                name: "Eight of Cups", 
+                meaning: "Walking away, disillusionment, seeking truth",
+                reversedMeaning: "Stagnation, avoiding change"
+            },
+            { 
+                name: "Nine of Cups", 
+                meaning: "Contentment, satisfaction, wishes fulfilled",
+                reversedMeaning: "Dissatisfaction, greed"
+            },
+            { 
+                name: "Ten of Cups", 
+                meaning: "Harmony, family, lasting happiness",
+                reversedMeaning: "Broken home, disharmony"
+            },
+            { 
+                name: "Page of Cups", 
+                meaning: "Creative beginnings, intuitive messages",
+                reversedMeaning: "Emotional immaturity, blocked creativity"
+            },
+            { 
+                name: "Knight of Cups", 
+                meaning: "Romance, charm, following dreams",
+                reversedMeaning: "Unrealistic, moodiness"
+            },
+            { 
+                name: "Queen of Cups", 
+                meaning: "Compassion, calm, emotional balance",
+                reversedMeaning: "Emotional instability, coldness"
+            },
+            { 
+                name: "King of Cups", 
+                meaning: "Emotional control, balance, diplomacy",
+                reversedMeaning: "Emotional manipulation, moodiness"
+            },
+
+            // Swords (Air)
+            { 
+                name: "Ace of Swords", 
+                meaning: "Clarity, breakthrough, new ideas",
+                reversedMeaning: "Confusion, chaos, lack of clarity"
+            },
+            { 
+                name: "Two of Swords", 
+                meaning: "Decision, stalemate, blocked emotions",
+                reversedMeaning: "Indecision, confusion, information overload"
+            },
+            { 
+                name: "Three of Swords", 
+                meaning: "Heartbreak, emotional pain, grief",
+                reversedMeaning: "Recovery, forgiveness, moving on"
+            },
+            { 
+                name: "Four of Swords", 
+                meaning: "Rest, restoration, contemplation",
+                reversedMeaning: "Restlessness, burnout, stress"
+            },
+            { 
+                name: "Five of Swords", 
+                meaning: "Conflict, defeat, win at all costs",
+                reversedMeaning: "Reconciliation, forgiveness"
+            },
+            { 
+                name: "Six of Swords", 
+                meaning: "Transition, leaving behind, moving forward",
+                reversedMeaning: "Stuck, resistance to change"
+            },
+            { 
+                name: "Seven of Swords", 
+                meaning: "Deception, strategy, sneaking away",
+                reversedMeaning: "Confession, exposure, truth revealed"
+            },
+            { 
+                name: "Eight of Swords", 
+                meaning: "Imprisonment, victim mentality, restriction",
+                reversedMeaning: "Freedom, self-acceptance, liberation"
+            },
+            { 
+                name: "Nine of Swords", 
+                meaning: "Anxiety, worry, fear",
+                reversedMeaning: "Hope, reaching out, despair ending"
+            },
+            { 
+                name: "Ten of Swords", 
+                meaning: "Rock bottom, failure, destruction",
+                reversedMeaning: "Recovery, regeneration, upturn"
+            },
+            { 
+                name: "Page of Swords", 
+                meaning: "New ideas, curiosity, communication",
+                reversedMeaning: "Deception, manipulation, all talk"
+            },
+            { 
+                name: "Knight of Swords", 
+                meaning: "Ambition, action, impulsiveness",
+                reversedMeaning: "Aggression, recklessness"
+            },
+            { 
+                name: "Queen of Swords", 
+                meaning: "Clear thinking, complexity, perceptiveness",
+                reversedMeaning: "Cold-hearted, bitter, cruel"
+            },
+            { 
+                name: "King of Swords", 
+                meaning: "Mental clarity, intellectual power, authority",
+                reversedMeaning: "Tyranny, coldness, ruthless"
+            },
+
+            // Pentacles (Earth)
+            { 
+                name: "Ace of Pentacles", 
+                meaning: "New opportunity, prosperity, abundance",
+                reversedMeaning: "Lost opportunity, missed chance"
+            },
+            { 
+                name: "Two of Pentacles", 
+                meaning: "Balance, adaptability, time management",
+                reversedMeaning: "Imbalance, disorganization"
+            },
+            { 
+                name: "Three of Pentacles", 
+                meaning: "Teamwork, collaboration, building",
+                reversedMeaning: "Lack of teamwork, disorganization"
+            },
+            { 
+                name: "Four of Pentacles", 
+                meaning: "Security, conservation, frugality",
+                reversedMeaning: "Greed, materialism, insecurity"
+            },
+            { 
+                name: "Five of Pentacles", 
+                meaning: "Hardship, loss, feeling abandoned",
+                reversedMeaning: "Recovery, spiritual growth"
+            },
+            { 
+                name: "Six of Pentacles", 
+                meaning: "Generosity, charity, sharing wealth",
+                reversedMeaning: "Selfishness, debt, unpaid dues"
+            },
+            { 
+                name: "Seven of Pentacles", 
+                meaning: "Assessment, reward, investment",
+                reversedMeaning: "Poor planning, bad investments"
+            },
+            { 
+                name: "Eight of Pentacles", 
+                meaning: "Apprenticeship, skill development, diligence",
+                reversedMeaning: "Perfectionism, lack of progress"
+            },
+            { 
+                name: "Nine of Pentacles", 
+                meaning: "Luxury, self-sufficiency, culmination",
+                reversedMeaning: "Showing off, empty success"
+            },
+            { 
+                name: "Ten of Pentacles", 
+                meaning: "Legacy, inheritance, establishment",
+                reversedMeaning: "Family conflicts, loss of legacy"
+            },
+            { 
+                name: "Page of Pentacles", 
+                meaning: "Manifestation, study, new opportunity",
+                reversedMeaning: "Lack of progress, procrastination"
+            },
+            { 
+                name: "Knight of Pentacles", 
+                meaning: "Hard work, routine, responsibility",
+                reversedMeaning: "Boredom, feeling stuck, laziness"
+            },
+            { 
+                name: "Queen of Pentacles", 
+                meaning: "Nurturing, practical, abundance",
+                reversedMeaning: "Materialism, smothering"
+            },
+            { 
+                name: "King of Pentacles", 
+                meaning: "Abundance, security, discipline",
+                reversedMeaning: "Greed, poor financial decisions"
+            }
+        ];
+
+        const drawButton = document.getElementById('drawButton');
+        const cardElements = document.querySelectorAll('.tarot-card');
+        let isReading = false;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function performReading() {
+            if (isReading) return;
+            isReading = true;
+            drawButton.disabled = true;
+
+            // Reset cards
+            cardElements.forEach(card => {
+                card.classList.remove('flipped');
+                const content = card.querySelector('.card-content');
+                if (content) content.classList.remove('reversed');
+            });
+
+            // Shuffle and draw three cards
+            const drawnCards = shuffleArray([...tarotCards]).slice(0, 3).map(card => ({
+                ...card,
+                isReversed: Math.random() < 0.33 // 33% chance of reversal
+            }));
+
+            // Flip cards one by one
+            cardElements.forEach((card, index) => {
+                setTimeout(() => {
+                    const frontFace = card.querySelector('.tarot-card-front');
+                    const titleElement = frontFace.querySelector('.card-title');
+                    const meaningElement = frontFace.querySelector('.card-meaning');
+                    const drawnCard = drawnCards[index];
+
+                    // Update content
+                    titleElement.textContent = drawnCard.name + (drawnCard.isReversed ? " (Reversed)" : "");
+                    meaningElement.textContent = drawnCard.isReversed ? drawnCard.reversedMeaning : drawnCard.meaning;
+
+                    // Add reversed class to content for styling, but don't rotate
+                    const content = frontFace.querySelector('.card-content');
+                    if (drawnCard.isReversed) {
+                        content.classList.add('reversed');
+                    }
+
+                    card.style.animation = 'cardGlow 2s infinite';
+                    card.classList.add('flipped');
+
+                    // Enable button after last card
+                    if (index === 2) {
+                        setTimeout(() => {
+                            isReading = false;
+                            drawButton.disabled = false;
+                        }, 1000);
+                    }
+                }, index * 1000);
+            });
+        }
+
+        drawButton.addEventListener('click', performReading);
+    </script>
+</body>
+</html>

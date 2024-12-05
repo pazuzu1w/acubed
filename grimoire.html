@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Grimoire - AAA Arcana</title>
+    <style>
+        :root {
+            --neon-purple: #b829e9;
+            --neon-blue: #2962ff;
+            --neon-pink: #ff0099;
+            --parchment: #fffbed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0a0f;
+            color: var(--parchment);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle var(--duration) linear infinite;
+            animation-delay: var(--delay);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 2rem;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        nav a {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 6rem 2rem 2rem;
+            min-height: 100vh;
+        }
+
+        .grimoire {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
+            margin-bottom: 2rem;
+            text-align: center;
+            opacity: 0;
+            animation: glow 2s ease-in-out infinite, fadeIn 1s ease forwards;
+        }
+
+        .entry {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .entry:nth-child(1) { animation-delay: 0.2s; }
+        .entry:nth-child(2) { animation-delay: 0.4s; }
+        .entry:nth-child(3) { animation-delay: 0.6s; }
+        .entry:nth-child(4) { animation-delay: 0.8s; }
+
+        .entry h2 {
+            color: var(--neon-blue);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .entry p {
+            color: var(--parchment);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .sigil-display {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .sigil-canvas {
+            border: 2px solid var(--neon-purple);
+            background: rgba(0, 0, 0, 0.3);
+            margin: 1rem auto;
+            cursor: crosshair;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px var(--neon-purple); }
+            50% { text-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple); }
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0; transform: translateZ(0) scale(0.5); }
+            50% { opacity: var(--opacity); transform: translateZ(0) scale(1); }
+            100% { opacity: 0; transform: translateZ(0) scale(0.5); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding-top: 4rem;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            nav {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="starfield" id="starfield"></div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="container">
+        <h1>Digital Grimoire</h1>
+
+        <div class="grimoire">
+            <div class="entry">
+                <h2>The Art of Sigil Creation</h2>
+                <p>Sigils are symbols charged with intention and purpose. In the digital age, we can create them through focused visualization and digital crafting. The power lies not in the medium, but in the intent and energy imbued within.</p>
+                <div class="sigil-display">
+                    <canvas id="sigilCanvas" class="sigil-canvas" width="300" height="300"></canvas>
+                </div>
+            </div>
+
+            <div class="entry">
+                <h2>Lunar Phases & Digital Divination</h2>
+                <p>The moon's influence extends beyond the physical realm into the digital sphere. Learn to align your virtual workings with lunar phases for enhanced spiritual connection and magical potency.</p>
+            </div>
+
+            <div class="entry">
+                <h2>Quantum Meditation Techniques</h2>
+                <p>Modern physics meets ancient wisdom in these advanced meditation practices. Explore the intersection of quantum entanglement and consciousness expansion.</p>
+            </div>
+
+            <div class="entry">
+                <h2>Cyber Scrying & Digital Dowsing</h2>
+                <p>Adapt traditional scrying techniques to the digital age. Learn how to read digital patterns and use modern tools for divination and insight.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 AAA Arcana. All rights reserved.</p>
+            <p style="margin-top: 1rem; font-size: 0.9rem;">Knowledge is Power • Wisdom is Protection</p>
+        </footer>
+    </div>
+
+    <script>
+        // Starfield animation
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            const numberOfStars = 200;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const size = Math.random() * 2 + 1;
+                const duration = Math.random() * 4 + 3;
+                const delay = Math.random() * duration;
+                const opacity = Math.random() * 0.5 + 0.3;
+                
+                star.style.cssText = `
+                    left: ${x}%;
+                    top: ${y}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    --duration: ${duration}s;
+                    --delay: -${delay}s;
+                    --opacity: ${opacity};
+                `;
+                
+                starfield.appendChild(star);
+            }
+        }
+
+        // Initialize starfield
+        createStarfield();
+
+        // Sigil Canvas Drawing
+        const canvas = document.getElementById('sigilCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Set canvas style
+        ctx.strokeStyle = '#b829e9';
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round';
+        ctx.lineWidth = 2;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#b829e9';
+
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+
+            [lastX, lastY] = [x, y];
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            [lastX, lastY] = [e.clientX - rect.left, e.clientY - rect.top];
+        });
+
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseout', () => isDrawing = false);
+
+        // Clear canvas button
+        const clearButton = document.createElement('button');
+        clearButton.textContent = 'Clear Sigil';
+        clearButton.style.cssText = `
+            background: var(--neon-purple);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+        `;
+        clearButton.addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+        
+        canvas.parentElement.appendChild(clearButton);
+    </script>
+</body>
+</html>
