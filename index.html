@@ -8,7 +8,7 @@
         :root {
             --neon-purple: #b829e9;
             --neon-blue: #2962ff;
-            --neon-pink: #ff0099;
+            --neon-red: rgba(255, 0, 0, 0.96);
             --neon-gold: #ffd700;
             --star-gold: #fff5c2;
         }
@@ -126,6 +126,15 @@
             height: 80px;
             opacity: 0;
             pointer-events: none;
+            transform-origin: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .sigil-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: center;
         }
 
         .starfield {
@@ -191,25 +200,146 @@
             box-shadow: 0 0 15px var(--neon-gold);
         }
 
-        .tarot-card.flipped {
-            transform: rotateY(180deg);
+        .tarot-section {
+            text-align: center;
+            margin: 4rem 0;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2.5s;
         }
 
-        .tarot-card.flipped.reversed {
-            transform: rotateY(180deg) rotateZ(180deg);
+        .tarot-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
         }
 
-        .tarot-card-front {
+        .tarot-card {
+            width: 180px;
+            height: 300px;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            border: 2px solid var(--neon-gold);
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease;
+        }
+
+        .tarot-card::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/></svg>') center no-repeat;
+            opacity: 0.3;
+        }
+
+        .card-content {
+            padding: 1rem;
+            text-align: center;
             background: linear-gradient(45deg, #2a1f3d, #1a1a2e);
             border: 2px solid var(--neon-purple);
-            transform: rotateY(180deg);
-            padding: 1rem;
+            border-radius: 10px;
+            height: 100%;
+            display: flex;
             flex-direction: column;
-            text-align: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
         }
 
-        .tarot-card-front.reversed {
-            transform: rotateY(180deg) rotateZ(180deg);
+        .card-content.reversed {
+            transform: rotateZ(180deg);
+        }
+
+        .card-content h3 {
+            color: var(--neon-gold);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px var(--neon-gold);
+        }
+
+        .card-content p {
+            color: var(--star-gold);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        @keyframes cardGlow {
+            0% { box-shadow: 0 0 10px var(--neon-gold); }
+            50% { box-shadow: 0 0 20px var(--neon-gold), 0 0 30px var(--neon-purple); }
+            100% { box-shadow: 0 0 10px var(--neon-gold); }
+        }
+
+        .tarot-card.revealed {
+            animation: cardGlow 2s infinite;
+        }
+
+        .tarot-reading {
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .tarot-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .tarot-card {
+            width: 180px;
+            height: 300px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.8s ease;
+        }
+
+        .tarot-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .tarot-card-back {
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            border: 2px solid var(--neon-gold);
+        }
+
+        .tarot-card-back::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/></svg>') center no-repeat;
+            opacity: 0.3;
+        }
+
+        .tarot-reading {
+            text-align: center;
+            margin: 4rem 0;
+        }
+
+        .tarot-cards {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
         }
 
         .card-content {
@@ -257,6 +387,16 @@
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+        }
+
+        .interpretation {
+            margin-top: 2rem;
+        }
+
+        .interpretation-text {
+            font-size: 1.1rem;
+            color: var(--star-gold);
+            margin-bottom: 2rem;
         }
 
         @keyframes revealTitle {
@@ -345,6 +485,16 @@
             }
         }
 
+        @keyframes rotateClockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes rotateCounterClockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
         footer {
             text-align: center;
             padding: 2rem;
@@ -362,93 +512,13 @@
                 justify-content: center;
             }
         }
-
-        .tarot-section {
-            text-align: center;
-            margin: 4rem 0;
-            opacity: 0;
-            animation: fadeIn 1s ease forwards;
-            animation-delay: 2.5s;
-        }
-
-        .tarot-container {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-
-        .tarot-card {
-            width: 180px;
-            height: 300px;
-            position: relative;
-            cursor: pointer;
-            transform-style: preserve-3d;
-            transition: transform 0.8s ease;
-        }
-
-        .tarot-card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
-        }
-
-        .tarot-card-back {
-            background: linear-gradient(45deg, #1a1a2e, #16213e);
-            border: 2px solid var(--neon-gold);
-        }
-
-        .tarot-card-back::before {
-            content: '';
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffd700"><path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/></svg>') center no-repeat;
-            opacity: 0.3;
-        }
-
-        .draw-button {
-            background: linear-gradient(45deg, var(--neon-purple), var(--neon-blue));
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            margin-top: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .draw-button:hover {
-            box-shadow: 0 0 20px rgba(184, 41, 233, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .draw-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        @keyframes cardGlow {
-            0% { box-shadow: 0 0 10px var(--neon-gold); }
-            50% { box-shadow: 0 0 20px var(--neon-gold), 0 0 30px var(--neon-purple); }
-            100% { box-shadow: 0 0 10px var(--neon-gold); }
-        }
     </style>
 </head>
 <body>
     <div class="starfield" id="starfield"></div>
     <nav>
         <a href="index.html">Home</a>
+        <a href="grimoire.html">Grimoire</a>
         <a href="contact.html">Contact</a>
     </nav>
 
@@ -493,37 +563,19 @@
                 Receive guidance from the arcane through our digital tarot reading. Focus on your question as you draw the cards.
             </p>
             
-            <div class="tarot-container" id="tarotContainer">
-                <div class="tarot-card">
-                    <div class="tarot-card-face tarot-card-back"></div>
-                    <div class="tarot-card-face tarot-card-front">
-                        <div class="card-content">
-                            <div class="card-title">Past</div>
-                            <div class="card-meaning"></div>
-                        </div>
-                    </div>
+            <div class="tarot-reading">
+                <h2>Your Tarot Reading</h2>
+                <div class="tarot-cards">
+                    <div class="tarot-card"></div>
+                    <div class="tarot-card"></div>
+                    <div class="tarot-card"></div>
                 </div>
-                <div class="tarot-card">
-                    <div class="tarot-card-face tarot-card-back"></div>
-                    <div class="tarot-card-face tarot-card-front">
-                        <div class="card-content">
-                            <div class="card-title">Present</div>
-                            <div class="card-meaning"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tarot-card">
-                    <div class="tarot-card-face tarot-card-back"></div>
-                    <div class="tarot-card-face tarot-card-front">
-                        <div class="card-content">
-                            <div class="card-title">Future</div>
-                            <div class="card-meaning"></div>
-                        </div>
-                    </div>
+                <button id="drawButton" class="action-button">Draw Cards</button>
+                <div id="interpretation" class="interpretation">
+                    <p class="loading-text" style="display: none;">Consulting the spirits...</p>
+                    <div class="interpretation-text"></div>
                 </div>
             </div>
-            
-            <button class="draw-button" id="drawButton">Draw Cards</button>
         </section>
 
         <section class="cta-section" style="text-align: center; margin: 4rem 0; opacity: 0; animation: fadeIn 1s ease forwards; animation-delay: 3s;">
@@ -588,12 +640,18 @@
         </footer>
     </div>
 
-    <script>
+    <script type="module">
+        import FortuneTeller from './js/fortune-teller.js';
+        
+        const fortuneTeller = new FortuneTeller();
+        
         const sigilShapes = [
             'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)', // diamond
-            'circle(50% at 50% 50%)', // circle
             'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)', // pentagon
-            'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)' // octagon
+            'circle(50% at 50% 50%)', // circle
+            'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%, 50% 0%)', // pentagon
+            'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)', // octagon
+            'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)' // square
         ];
 
         const sigilColors = [
@@ -602,9 +660,15 @@
             'var(--neon-pink)'
         ];
 
-        function createSigil() {
-            const sigil = document.createElement('div');
-            sigil.className = 'sigil';
+        function createSacredSigil() {
+            const container = document.createElement('div');
+            container.className = 'sigil';
+            
+            // Create two inner divs for the counter-rotating squares
+            const inner1 = document.createElement('div');
+            const inner2 = document.createElement('div');
+            inner1.className = 'sigil-inner';
+            inner2.className = 'sigil-inner';
             
             // Random position
             const x = Math.random() * window.innerWidth;
@@ -613,23 +677,39 @@
             // Random movement
             const moveX = (Math.random() - 0.5) * 200;
             const moveY = (Math.random() - 0.5) * 200;
-            const rotation = Math.random() * 360;
             
-            sigil.style.left = `${x}px`;
-            sigil.style.top = `${y}px`;
-            sigil.style.clipPath = sigilShapes[Math.floor(Math.random() * sigilShapes.length)];
-            sigil.style.border = `2px solid ${sigilColors[Math.floor(Math.random() * sigilColors.length)]}`;
-            sigil.style.setProperty('--moveX', `${moveX}px`);
-            sigil.style.setProperty('--moveY', `${moveY}px`);
-            sigil.style.setProperty('--rotation', `${rotation}deg`);
+            // Set up the container
+            container.style.left = `${x}px`;
+            container.style.top = `${y}px`;
+            container.style.setProperty('--moveX', `${moveX}px`);
+            container.style.setProperty('--moveY', `${moveY}px`);
             
-            sigil.style.animation = 'floatSigil 20s linear infinite, fadeIn 2s ease forwards';
+            // Style the squares
+            const color = sigilColors[Math.floor(Math.random() * sigilColors.length)];
+            inner1.style.clipPath = 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)';
+            inner2.style.clipPath = 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)';
+            inner1.style.border = `2px solid ${color}`;
+            inner2.style.border = `2px solid ${color}`;
+            inner2.style.transform = 'rotate(35deg)';
             
-            document.body.appendChild(sigil);
+            // Add glow effect
+            inner1.style.boxShadow = `0 0 10px ${color}, inset 0 0 5px ${color}`;
+            inner2.style.boxShadow = `0 0 10px ${color}, inset 0 0 5px ${color}`;
+            
+            // Set animations
+            inner1.style.animation = 'rotateClockwise 10s linear infinite';
+            inner2.style.animation = 'rotateCounterClockwise 10s linear infinite';
+            container.style.animation = 'floatSigil 20s linear infinite, fadeIn 2s ease forwards';
+            
+            // Construct the sacred sigil
+            container.appendChild(inner1);
+            container.appendChild(inner2);
+            document.body.appendChild(container);
 
+            // Remove after animation
             setTimeout(() => {
-                sigil.style.animation = 'floatSigil 20s linear infinite, fadeIn 2s ease forwards reverse';
-                setTimeout(() => sigil.remove(), 2000);
+                container.style.animation = 'floatSigil 20s linear infinite, fadeIn 2s ease forwards reverse';
+                setTimeout(() => container.remove(), 2000);
             }, 18000);
         }
 
@@ -639,7 +719,7 @@
         
         function addSigilWithDelay() {
             if (sigilCount < maxSigils) {
-                createSigil();
+                createSacredSigil();
                 sigilCount++;
                 setTimeout(addSigilWithDelay, 2000);
             }
@@ -1255,54 +1335,65 @@
             return array;
         }
 
-        function performReading() {
+        async function performReading() {
             if (isReading) return;
             isReading = true;
-            drawButton.disabled = true;
-
-            // Reset cards
+            
+            const cardElements = document.querySelectorAll('.tarot-card');
+            
+            // Reset previous reading
             cardElements.forEach(card => {
-                card.classList.remove('flipped');
-                const content = card.querySelector('.card-content');
-                if (content) content.classList.remove('reversed');
+                card.classList.remove('revealed');
+                card.innerHTML = '';
             });
-
-            // Shuffle and draw three cards
-            const drawnCards = shuffleArray([...tarotCards]).slice(0, 3).map(card => ({
-                ...card,
-                isReversed: Math.random() < 0.33 // 33% chance of reversal
-            }));
-
-            // Flip cards one by one
-            cardElements.forEach((card, index) => {
-                setTimeout(() => {
-                    const frontFace = card.querySelector('.tarot-card-front');
-                    const titleElement = frontFace.querySelector('.card-title');
-                    const meaningElement = frontFace.querySelector('.card-meaning');
-                    const drawnCard = drawnCards[index];
-
-                    // Update content
-                    titleElement.textContent = drawnCard.name + (drawnCard.isReversed ? " (Reversed)" : "");
-                    meaningElement.textContent = drawnCard.isReversed ? drawnCard.reversedMeaning : drawnCard.meaning;
-
-                    // Add reversed class to content for styling, but don't rotate
-                    const content = frontFace.querySelector('.card-content');
-                    if (drawnCard.isReversed) {
-                        content.classList.add('reversed');
-                    }
-
-                    card.style.animation = 'cardGlow 2s infinite';
-                    card.classList.add('flipped');
-
-                    // Enable button after last card
-                    if (index === 2) {
-                        setTimeout(() => {
-                            isReading = false;
-                            drawButton.disabled = false;
-                        }, 1000);
-                    }
-                }, index * 1000);
+            document.querySelector('.interpretation-text').innerHTML = '';
+            
+            // Show loading state
+            const loadingText = document.querySelector('.loading-text');
+            loadingText.style.display = 'block';
+            
+            // Shuffle and draw cards
+            const shuffledDeck = [...tarotCards];
+            shuffleArray(shuffledDeck);
+            const drawnCards = shuffledDeck.slice(0, 3);
+            
+            // Add reversed property randomly
+            drawnCards.forEach(card => {
+                card.isReversed = Math.random() < 0.5;
             });
+            
+            // Animate cards
+            for (let i = 0; i < cardElements.length; i++) {
+                const card = cardElements[i];
+                const drawnCard = drawnCards[i];
+                
+                await new Promise(resolve => setTimeout(resolve, 500 * i));
+                
+                card.innerHTML = `
+                    <div class="card-content ${drawnCard.isReversed ? 'reversed' : ''}">
+                        <h3>${drawnCard.name}</h3>
+                        <p>${drawnCard.isReversed ? drawnCard.reversedMeaning : drawnCard.meaning}</p>
+                    </div>
+                `;
+                
+                card.classList.add('revealed');
+            }
+            
+            // Get AI interpretation
+            try {
+                const interpretation = await fortuneTeller.interpretReading(drawnCards);
+                loadingText.style.display = 'none';
+                document.querySelector('.interpretation-text').innerHTML = interpretation;
+            } catch (error) {
+                console.error('Error getting interpretation:', error);
+                loadingText.style.display = 'none';
+                document.querySelector('.interpretation-text').innerHTML = 
+                    'The spirits are unclear at this moment. Please try again later.';
+            }
+            
+            setTimeout(() => {
+                isReading = false;
+            }, 1500);
         }
 
         drawButton.addEventListener('click', performReading);
